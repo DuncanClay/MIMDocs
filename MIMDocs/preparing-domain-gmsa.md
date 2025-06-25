@@ -78,15 +78,15 @@ All the components of your MIM deployment need their own identities in the domai
 
 1. Sign in to the domain controller as the domain administrator (*e. g. Contoso\Administrator*).
 
-2. Create the following user accounts for MIM services. Start PowerShell and type the following PowerShell script to create new AD domain users (not all accounts are mandatory, although the script is provided for informational purposes only, it is a best practice to use a dedicated *MIMAdmin* account for MIM and SharePoint install process).
+2. Create the following user accounts for MIM services. Start PowerShell and type the following PowerShell script to create new AD domain users (not all accounts are mandatory, although the script is provided for informational purposes only, it is a best practice to use a dedicated *MIMInstall* account for MIM and SharePoint install process).
 
     ```PowerShell
     import-module activedirectory
     $sp = ConvertTo-SecureString "Pass@word1" –asplaintext –force
 
-    New-ADUser –SamAccountName MIMAdmin –name MIMAdmin
-    Set-ADAccountPassword –identity MIMAdmin –NewPassword $sp
-    Set-ADUser –identity MIMAdmin –Enabled 1 –PasswordNeverExpires 1
+    New-ADUser –SamAccountName MIMInstall –name MIMInstall
+    Set-ADAccountPassword –identity MIMInstall –NewPassword $sp
+    Set-ADUser –identity MIMInstall –Enabled 1 –PasswordNeverExpires 1
 
     New-ADUser –SamAccountName svcSharePoint –name svcSharePoint
     Set-ADAccountPassword –identity svcSharePoint –NewPassword $sp
@@ -110,7 +110,7 @@ All the components of your MIM deployment need their own identities in the domai
     New-ADGroup –name MIMSyncBrowse –GroupCategory Security –GroupScope Global –SamAccountName MIMSyncBrowse
     New-ADGroup –name MIMSyncPasswordSet –GroupCategory Security –GroupScope Global –SamAccountName MIMSyncPasswordSet
     Add-ADGroupMember -identity MIMSyncAdmins -Members Administrator
-    Add-ADGroupMember -identity MIMSyncAdmins -Members MIMAdmin
+    Add-ADGroupMember -identity MIMSyncAdmins -Members MIMInstall
     ```
 
 4.  Add SPNs to enable Kerberos authentication for service accounts
